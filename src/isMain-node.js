@@ -1,30 +1,21 @@
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
-if (!import.meta.resolve || import.meta.resolve("data:,").then) {
-  const { default: resolve } = await import("@nodefill/import-meta-resolve");
-  import.meta.resolve = resolve;
-}
-
+/**
+ * @param {ImportMeta} importMeta
+ * @returns {boolean}
+ */
 export default function isMain(importMeta) {
-  const importMetaURL = `${importMeta.url}`;
-  const importMetaPath = fileURLToPath(importMetaURL);
+  if ("main" in importMeta) {
+    return importMeta.main;
+  }
   if (!process.argv[1]) {
     return false;
   }
-  let importResolvedMain;
-  try {
-    importResolvedMain = import.meta.resolve(process.argv[1]);
-  } catch {}
-  if (importResolvedMain === importMetaURL) {
-    return true;
-  }
-  const require = createRequire(process.argv[1]);
-  let requireResolvedMain;
-  try {
-    requireResolvedMain = require.resolve(process.argv[1]);
-  } catch {}
-  if (requireResolvedMain === importMetaPath) {
+  const require = createRequire("/");
+  const mainPath = require.resolve(process.argv[1]);
+  const importMetaPath = fileURLToPath(importMeta.url);
+  if (mainPath === importMetaPath) {
     return true;
   }
   return false;

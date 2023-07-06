@@ -7,6 +7,7 @@
   }
 </script>
 <script type="module">
-  import isMain from "../src/isMain-browser.js";
-  console.log(isMain(import.meta));
+  import polyfill from "../src/polyfill.js";
+  polyfill(import.meta);
+  console.log(import.meta.main);
 </script>

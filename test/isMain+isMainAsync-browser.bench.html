@@ -1,0 +1,37 @@
+<script type="importmap">
+  {
+    "imports": {
+      "#isMain.js": "../src/isMain-browser.js",
+      "#isMainAsync.js": "../src/isMainAsync-browser.js",
+      "tinybench": "https://esm.sh/tinybench@^2.5.0"
+    }
+  }
+</script>
+<script type="module">
+  import { Bench } from "tinybench";
+  import isMain from "../src/isMain-browser.js";
+  import isMainAsync from "../src/isMainAsync-browser.js";
+
+  const bench = new Bench({ time: 1000 });
+
+  const { default: importMeta } = await import(
+    "data:text/javascript,export default import.meta"
+  );
+
+  bench.add("isMain()", () => {
+    isMain(importMeta);
+  });
+
+  bench.add("isMainAsync()", async () => {
+    await isMainAsync(importMeta);
+  });
+
+  await bench.run();
+  console.table(bench.table());
+</script>
+
+<script src="https://esm.sh/assert@^2.0.0" type="module"></script>
+<script src="https://esm.sh/assert@~2.0.0" type="module"></script>
+<script src="https://esm.sh/assert@2.x.x" type="module"></script>
+<script src="https://esm.sh/assert@2.0.x" type="module"></script>
+<script src="https://esm.sh/assert@2.0.x" type="module"></script>

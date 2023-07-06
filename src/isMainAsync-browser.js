@@ -3,9 +3,9 @@ const finalURL = new WeakMap();
 
 /**
  * @param {ImportMeta} importMeta
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-function isMain(importMeta) {
+export default async function isMainAsync(importMeta) {
   if ("main" in importMeta) {
     return importMeta.main;
   }
@@ -18,6 +18,9 @@ function isMain(importMeta) {
     return true;
   }
   if (typeof document !== "undefined") {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const promises = [];
     for (const script of document.scripts) {
       if (script.type !== "module") {
         continue;
@@ -30,19 +33,22 @@ function isMain(importMeta) {
         return true;
       }
       if (/^https?:/.test(script.src) && !finalURL.has(script)) {
-        try {
-          const xhr = new XMLHttpRequest();
-          xhr.open("HEAD", script.src, false);
-          xhr.send(null);
-          finalURL.set(script, xhr.responseURL);
-        } catch {}
+        const p = fetch(script.src, { method: "HEAD", signal }).then((r) => {
+          finalURL.set(script, r.url);
+          if (r.url === importMeta.url) {
+            controller.abort();
+            return true;
+          } else {
+            throw null;
+          }
+        });
+        promises.push(p);
       }
-      if (finalURL.get(script) && finalURL.get(script) === importMeta.url) {
-        return true;
-      }
+    }
+    const x = await Promise.any(promises).catch(() => false);
+    if (x) {
+      return x;
     }
   }
   return false;
 }
-
-export default isMain;

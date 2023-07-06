@@ -1,25 +1,49 @@
-# es-main
+# `import.meta.main` for Node.js
 
-Test if an [ES module](https://nodejs.org/api/esm.html) is run directly with Node.js.  Acts as a replacement for `require.main`.
+## Installation
 
-## use
+```sh
+npm install @denofill/import-meta-main
+```
 
 ```js
-import esMain from 'es-main';
+import {} from "https://esm.sh/@denofill/import-meta-main";
+```
 
-if (esMain(import.meta)) {
-  // Module run directly.
+## Usage
+
+```js
+import polyfill from "@denofill/import-meta-main";
+polyfill(import.meta);
+
+if (import.meta.main) {
+  console.log("Hello from the CLI!");
+} else {
+  console.debug("Hello from a module!");
 }
 ```
 
-## why?
+Don't worry about cross-environment compatibility. This polyfill is a no-op in
+Deno and Bun (which already have native support for `import.meta.main`).
 
-It can be useful to have a module that is both imported from other modules and run directly.  With CommonJS, it is possible to have a top-level condition that checks if a script run directly like this:
+### Caveats
 
-```js
-if (require.main === module) {
-  // Do something special.
-}
+This works in Node.js main thread, Node.js worker threads, Node.js `--loader`
+threads, window, `Worker`, `SharedWorker`, and service worker contexts. That
+notably **omits `Worklet` contexts** (from the CSS worklet and audio worklet
+APIs). Why? Because these contexts don't expose any hints as to what the
+top-level script was (no `location`).
+
+When operating in a window context with a `document`, the `isMain()` check will
+**properly resolve** all `<script src="https://...">` URLs to their final
+post-3XX redirected URL. This comes at the cost of doing this **synchronously**.
+There is an alternative `isMainAsync()` function that can be used if you so
+desire.
+
+## Development
+
+```sh
+npm install
+npm test
+npm test:browser
 ```
-
-With ES modules in Node.js, `require.main` is [not available](https://nodejs.org/dist/latest-v14.x/docs/api/esm.html#esm_no_require_exports_module_exports_filename_dirname).  Other alternatives like `process.mainModule` and `module.parent` are also not defined for ES modules.  In the future, there may be [an alternative way](https://github.com/nodejs/modules/issues/274) to do this check (e.g. `import.meta.main` or a special `main` export).  Until then, this package provides a workaround.

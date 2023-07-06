@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": false,
+    "paths": {
+      "#isMain.js": ["./src/isMain-default.js"],
+      "#isMainAsync.js": ["./src/isMainAsync-default.js"]
+    }
+  }
+}
