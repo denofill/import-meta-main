@@ -1,15 +1,10 @@
-import { fetchSync } from "./lib/fetchSync.js";
+import fetchSync from "./lib/fetchSync.js";
 
 export default function isMain(importMeta) {
-  // if (importMeta && "main" in importMeta) {
-  //   return importMeta.main;
-  // }
   const importMetaURL = `${importMeta.url}`;
-
   if (importMetaURL === location.href) {
     return true;
   }
-
   if (typeof document !== "undefined") {
     for (const script of document.scripts) {
       if (script.type !== "module") {
@@ -32,6 +27,5 @@ export default function isMain(importMeta) {
       }
     }
   }
-
   return false;
 }

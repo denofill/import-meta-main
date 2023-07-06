@@ -7,16 +7,11 @@ if (!import.meta.resolve || import.meta.resolve("data:,").then) {
 }
 
 export default function isMain(importMeta) {
-  // if (importMeta && "main" in importMeta) {
-  //   return importMeta.main;
-  // }
   const importMetaURL = `${importMeta.url}`;
   const importMetaPath = fileURLToPath(importMetaURL);
-
   if (!process.argv[1]) {
     return false;
   }
-
   let importResolvedMain;
   try {
     importResolvedMain = import.meta.resolve(process.argv[1]);
@@ -24,7 +19,6 @@ export default function isMain(importMeta) {
   if (importResolvedMain === importMetaURL) {
     return true;
   }
-
   const require = createRequire(process.argv[1]);
   let requireResolvedMain;
   try {
@@ -33,6 +27,5 @@ export default function isMain(importMeta) {
   if (requireResolvedMain === importMetaPath) {
     return true;
   }
-
   return false;
 }
