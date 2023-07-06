@@ -30,12 +30,16 @@ function isMain(importMeta) {
         return true;
       }
       if (/^https?:/.test(script.src) && !finalURL.has(script)) {
+        let u;
         try {
           const xhr = new XMLHttpRequest();
           xhr.open("HEAD", script.src, false);
           xhr.send(null);
-          finalURL.set(script, xhr.responseURL);
-        } catch {}
+          u = xhr.responseURL;
+        } catch (e) {
+          console.warn("import-meta-resolve", e);
+        }
+        finalURL.set(script, u);
       }
       if (finalURL.get(script) && finalURL.get(script) === importMeta.url) {
         return true;

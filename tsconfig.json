@@ -8,8 +8,7 @@
     "moduleResolution": "NodeNext",
     "strict": false,
     "paths": {
-      "#isMain.js": ["./src/isMain-default.js"],
-      "#isMainAsync.js": ["./src/isMainAsync-default.js"]
+      "#isMain.js": ["./src/isMain-default.js"]
     }
   }
 }

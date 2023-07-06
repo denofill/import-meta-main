@@ -9,32 +9,17 @@
       "node": "./src/isMain-node.js",
       "browser": "./src/isMain-browser.js",
       "default": "./src/isMain-default.js"
-    },
-    "#isMainAsync.js": {
-      "bun": "./src/isMainAsync-default.js",
-      "deno": "./src/isMainAsync-default.js",
-      "node": "./src/isMainAsync-node.js",
-      "browser": "./src/isMainAsync-browser.js",
-      "default": "./src/isMainAsync-default.js"
     }
   },
   "exports": {
     ".": "./src/polyfill.js",
     "./polyfill.js": "./src/polyfill.js",
-    "./polyfillAsync.js": "./src/polyfillAsync.js",
     "./isMain.js": {
       "bun": "./src/isMain-default.js",
       "deno": "./src/isMain-default.js",
       "node": "./src/isMain-node.js",
       "browser": "./src/isMain-browser.js",
       "default": "./src/isMain-default.js"
-    },
-    "./isMainAsync.js": {
-      "bun": "./src/isMainAsync-default.js",
-      "deno": "./src/isMainAsync-default.js",
-      "node": "./src/isMainAsync-node.js",
-      "browser": "./src/isMainAsync-browser.js",
-      "default": "./src/isMainAsync-default.js"
     }
   },
   "scripts": {

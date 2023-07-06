@@ -37,8 +37,7 @@ top-level script was (no `location`).
 When operating in a window context with a `document`, the `isMain()` check will
 **properly resolve** all `<script src="https://...">` URLs to their final
 post-3XX redirected URL. This comes at the cost of doing this **synchronously**.
-There is an alternative `isMainAsync()` function that can be used if you so
-desire.
+If you'd like to contribute an `isMainAsync()` function, that'd be great! ❤️
 
 ## Development
 

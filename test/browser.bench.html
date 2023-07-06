@@ -2,7 +2,6 @@
   {
     "imports": {
       "#isMain.js": "../src/isMain-browser.js",
-      "#isMainAsync.js": "../src/isMainAsync-browser.js",
       "tinybench": "https://esm.sh/tinybench@^2.5.0"
     }
   }
@@ -10,20 +9,13 @@
 <script type="module">
   import { Bench } from "tinybench";
   import isMain from "../src/isMain-browser.js";
-  import isMainAsync from "../src/isMainAsync-browser.js";
 
   const bench = new Bench({ time: 1000 });
 
-  const { default: importMeta } = await import(
-    "data:text/javascript,export default import.meta"
-  );
-
+  const u = "data:text/javascript,export default import.meta";
+  const { default: importMeta } = await import(u);
   bench.add("isMain()", () => {
     isMain(importMeta);
-  });
-
-  bench.add("isMainAsync()", async () => {
-    await isMainAsync(importMeta);
   });
 
   await bench.run();
